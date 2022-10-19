@@ -1,0 +1,3 @@
+[Log]	[2022-10-18: 7:14:47PM]	this is a different log file test 
+[Warn]	[2022-10-18: 7:14:47PM]	this is a different log file test 
+[Error]	[2022-10-18: 7:14:47PM]	this is a different log file test 
