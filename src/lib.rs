@@ -2,9 +2,10 @@ use std::fs::{OpenOptions};
 use std::io::Write;
 use std::path::Path;
 use std::string::ToString;
+use std::sync::Mutex;
 use chrono::{Datelike, DateTime, Local, Timelike};
 
-pub static mut FILE_NAME: &str = "log.txt";
+pub static FILE_NAME: Mutex<&str> = Mutex::new("log.log");
 
 pub enum LogLevel {
     Error,
@@ -23,7 +24,10 @@ impl LogLevel {
 }
 
 pub fn log(text: &str, level: LogLevel) {
-    let path = Path::new(unsafe { FILE_NAME });
+
+    let path = {
+        Path::new( *FILE_NAME.lock().unwrap())
+    };
     let display = path.display();
     let date: DateTime<Local> = Local::now();
 
@@ -31,12 +35,15 @@ pub fn log(text: &str, level: LogLevel) {
     //     Ok(f) => {f}
     //     Err(e) => {panic!("{}, {}",e, display);}
     // };
+    let file_name = {
+        *FILE_NAME.lock().unwrap()
+    };
 
     let mut file = match OpenOptions::new()
         .write(true)
         .create(true)
         .append(true)
-        .open(unsafe { FILE_NAME }) {
+        .open(file_name) {
         Ok(f) => {f}
         Err(e) => {panic!("{}, {}", e, display);}
     };
@@ -59,6 +66,8 @@ pub fn log(text: &str, level: LogLevel) {
 
 #[cfg(test)]
 mod tests {
+    use std::thread::sleep;
+    use std::time::Duration;
     use super::*;
 
     #[test]
@@ -78,11 +87,13 @@ mod tests {
 
     #[test]
     fn test_diff_filename() {
-        unsafe { FILE_NAME = "other_log.txt"; }
+        *FILE_NAME.lock().unwrap() = "other_log.log";
         log("this is a different log file test", LogLevel::Log);
+        sleep(Duration::from_secs(1));
         log("this is a different log file test", LogLevel::Warning);
+        sleep(Duration::from_secs(1));
         log("this is a different log file test", LogLevel::Error);
-        unsafe { FILE_NAME = "log.txt"; }
+        *FILE_NAME.lock().unwrap() = "log.log";
     }
 
 
