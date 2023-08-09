@@ -25,13 +25,13 @@ impl Display for LogDate {
             ptr.month(),
             ptr.day(),
             ptr.year(),
-            ptr.hour(),
+            ptr.hour12().1,
             ptr.minute(),
             {
                 if ptr.hour12().0 {
-                    "AM"
-                } else {
                     "PM"
+                } else {
+                    "AM"
                 }
             }
         )

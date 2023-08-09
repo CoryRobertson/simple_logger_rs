@@ -10,7 +10,7 @@ pub struct Logger {
 }
 
 impl Logger {
-    pub fn new(log_path: PathBuf) -> Result<Logger, io::Error> {
+    pub fn new(log_path: PathBuf) -> Result<Self, io::Error> {
         if !log_path.exists() {
             fs::create_dir_all(log_path.parent().unwrap())?;
         }
@@ -20,13 +20,17 @@ impl Logger {
         })
     }
 
+    pub fn get_log_file_path(&self) -> PathBuf {
+        self.log_path.lock().unwrap().clone()
+    }
+
     fn get_log_file(path: &Path) -> io::Result<File> {
         OpenOptions::new().create(true).append(true).open(path)
     }
 
-    pub fn log(&self, log_entry: LogEntry) -> io::Result<usize> {
+    pub fn log(&self, log_entry: &LogEntry) -> io::Result<usize> {
         let path = self.log_path.lock().unwrap();
-        match Logger::get_log_file(path.as_path()) {
+        match Self::get_log_file(path.as_path()) {
             Ok(mut log_file) => log_file.write(log_entry.to_string().as_bytes()),
             Err(err) => Err(err),
         }
