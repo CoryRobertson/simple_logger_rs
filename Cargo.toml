@@ -2,6 +2,11 @@
 name = "simple_logger_rs"
 version = "1.0.0"
 edition = "2021"
+license = "GPL-3.0-only"
+description = "A very basic logging library"
+repository = "https://github.com/CoryRobertson/simple_logger_rs"
+homepage = "https://github.com/CoryRobertson/simple_logger_rs"
+readme = "README.md"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
