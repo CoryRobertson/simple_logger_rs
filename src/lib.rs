@@ -15,11 +15,12 @@ mod tests {
 
     #[test]
     fn test_log() {
-        let logger = Logger::new(PathBuf::from("./test.log")).unwrap();
+        let logger = Logger::new(PathBuf::from("test.log")).unwrap();
+        logger.log(&("test123".into())).unwrap();
         println!("{:?}", logger.get_log_file_path().canonicalize().unwrap());
         logger.log(&("test123".into())).unwrap();
         logger.log(&("test123".into())).unwrap();
-        logger.log(&("test123".into())).unwrap();
+        logger.log(&"test123".into()).unwrap();
         logger.log(&("test123".into())).unwrap();
         logger.log(&("test123".into())).unwrap();
         assert!(true);
