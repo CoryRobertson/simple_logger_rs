@@ -12,3 +12,4 @@ readme = "README.md"
 
 [dependencies]
 chrono = "0.4.22"
+tracing = "0.1.40"

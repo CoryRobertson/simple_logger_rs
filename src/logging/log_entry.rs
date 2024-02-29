@@ -4,6 +4,7 @@ use crate::logging::log_message::LogMessage;
 use std::fmt::{Display, Formatter};
 
 /// An item that is to be written to a file
+#[derive(Debug, Clone)]
 pub struct LogEntry {
     log_level: LogLevel,
     log_message: LogMessage,
@@ -11,6 +12,7 @@ pub struct LogEntry {
 }
 
 impl From<&str> for LogEntry {
+    #[tracing::instrument]
     fn from(value: &str) -> Self {
         Self {
             log_level: LogLevel::Info,
@@ -21,6 +23,7 @@ impl From<&str> for LogEntry {
 }
 
 impl From<String> for LogEntry {
+    #[tracing::instrument]
     fn from(value: String) -> Self {
         Self {
             log_level: LogLevel::Info,
@@ -31,6 +34,7 @@ impl From<String> for LogEntry {
 }
 
 impl LogEntry {
+    #[tracing::instrument]
     pub fn new(log_message: LogMessage, log_level: LogLevel) -> Self {
         Self {
             log_level,
@@ -41,6 +45,8 @@ impl LogEntry {
 }
 
 impl Display for LogEntry {
+
+    #[tracing::instrument(skip_all)]
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         writeln!(
             f,

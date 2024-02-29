@@ -2,15 +2,18 @@ use chrono::{DateTime, Datelike, Local, Timelike};
 use std::fmt::{Display, Formatter};
 
 /// Date and time that will be added to a log entry when logged to a file
+#[derive(Debug,Clone)]
 pub struct LogDate(DateTime<Local>);
 
 impl LogDate {
+    #[tracing::instrument]
     pub fn new() -> Self {
         Self(Local::now())
     }
 }
 
 impl Default for LogDate {
+    #[tracing::instrument]
     fn default() -> Self {
         Self::new()
     }

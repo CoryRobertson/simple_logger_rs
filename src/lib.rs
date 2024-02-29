@@ -23,6 +23,5 @@ mod tests {
         logger.log(&"test123".into()).unwrap();
         logger.log(&("test123".into())).unwrap();
         logger.log(&("test123".into())).unwrap();
-        assert!(true);
     }
 }
